@@ -10,7 +10,7 @@ public class StringTextHandler {
     public static final String[] PUNCTUATION_MARKS = {".", ",", ":", ";", "!", "?", "-"};
 
     public static String replaceEachWordLetter(String text, String symbol, int letterNumber) {
-        String[] words = text.trim().split(WORDS_SEPARATOR);
+        String[] words = textToStringArray(text.trim());
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -29,7 +29,7 @@ public class StringTextHandler {
     }
 
     public static String correctWrongLetter(String text) {
-        String[] words = text.trim().split(WORDS_SEPARATOR);
+        String[] words = textToStringArray(text.trim());
 
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
@@ -47,7 +47,7 @@ public class StringTextHandler {
     }
 
     public static String replaceWordsWithSubstring(String text, String substring, int wordLength) {
-        String[] words = text.trim().split(WORDS_SEPARATOR);
+        String[] words = textToStringArray(text.trim());
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -66,7 +66,7 @@ public class StringTextHandler {
     }
 
     public static String removeAllCharacters(String text) {
-        String[] words = text.trim().split(WORDS_SEPARATOR);
+        String[] words = textToStringArray(text.trim());
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -81,7 +81,7 @@ public class StringTextHandler {
     }
 
     public static String removeWordsStartingWithConsonant(String text, int wordLength) {
-        String[] words = text.trim().split(WORDS_SEPARATOR);
+        String[] words = textToStringArray(text.trim());
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -91,7 +91,7 @@ public class StringTextHandler {
                 punctuationMark = String.valueOf(word.charAt(currentWordLength - 1));
                 currentWordLength--;
             }
-            if (currentWordLength == wordLength && isConsonantLetter(word.substring(0,1))) {
+            if (currentWordLength == wordLength && isConsonantLetter(word.substring(0, 1))) {
                 words[i] = punctuationMark;
             }
         }
@@ -132,6 +132,36 @@ public class StringTextHandler {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static String[] textToStringArray(String text) {
+        int wordsInTextCounter = 0;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.substring(i, i + 1).equals(WORDS_SEPARATOR) || i == text.length() - 1) {
+                wordsInTextCounter++;
+            }
+        }
+        String[] words = new String[wordsInTextCounter];
+
+        int previousSeparatorIndex = -1;
+        int currentWordLength = 0;
+        int wordsArrayAddingIndex = 0;
+        for (int i = 0; i < text.length(); i++) {
+            boolean isSeparator = text.substring(i, i + 1).equals(WORDS_SEPARATOR);
+            if (!isSeparator) {
+                currentWordLength++;
+            }
+            if (isSeparator || i == text.length() - 1) {
+                String currentWord = text.substring(previousSeparatorIndex + 1, previousSeparatorIndex + currentWordLength + 1);
+                words[wordsArrayAddingIndex] = currentWord;
+                wordsArrayAddingIndex++;
+
+                currentWordLength = 0;
+                previousSeparatorIndex = i;
+            }
+        }
+
+        return words;
     }
 
 }
