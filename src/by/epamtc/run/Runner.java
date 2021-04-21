@@ -9,14 +9,17 @@ public class Runner {
         String text = "hello, ih, myd- pi.";
         System.out.println(StringTextHandler.replaceEachWordLetter(text, "P", 3));
         System.out.println(CharTextHandler.replaceEachWordLetter(text, 'P', 3));
+        System.out.println(RegularExpressionHandler.replaceEachWordLetter(text, 'P', 3));
 
         String text2 = "hfPA, sfhjP, sflkjPO";
         System.out.println(StringTextHandler.correctWrongLetter(text2));
         System.out.println(CharTextHandler.correctWrongLetter(text2));
+        System.out.println(RegularExpressionHandler.correctWrongLetter(text2));
 
         String text3 = "hfP, sfhd, sfg, dsdaf.";
         System.out.println(StringTextHandler.replaceWordsWithSubstring(text3, "AAAAA", 3));
         System.out.println(CharTextHandler.replaceWordsWithSubstring(text3, "AAAAA", 3));
+        System.out.println(RegularExpressionHandler.replaceWordsWithSubstring(text3, "AAAAA", 3));
 
         String text4 = " hello, its, me.  ";
         System.out.println(StringTextHandler.removeAllCharacters(text4));
@@ -26,6 +29,7 @@ public class Runner {
         String text5 = "фыва, фыа, про, лкец, зло.";
         System.out.println(StringTextHandler.removeWordsStartingWithConsonant(text5, 3));
         System.out.println(CharTextHandler.removeWordsStartingWithConsonant(text5, 3));
+        System.out.println(RegularExpressionHandler.removeWordsStartingWithConsonant(text5, 3));
 
     }
 }
