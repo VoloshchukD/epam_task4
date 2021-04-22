@@ -145,7 +145,7 @@ public class CharTextHandler {
     public static boolean isConsonantLetter(char letter) {
         boolean result = false;
         for (char consonantLetter : CONSONANT_LETTERS) {
-            if (consonantLetter == letter) {
+            if (consonantLetter == letter || ((char) (consonantLetter - 32) == letter)) {
                 result = true;
                 break;
             }

@@ -96,7 +96,7 @@ public class RegularExpressionHandler {
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
             StringBuilder currentWord = new StringBuilder();
-            Pattern wordPattern = Pattern.compile(CONSONANT_LETTERS);
+            Pattern wordPattern = Pattern.compile(CONSONANT_LETTERS, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
             Matcher wordMatcher = wordPattern.matcher(matcher.group(1));
 
             if (matcher.group(1).length() != wordLength || !wordMatcher.find()) {

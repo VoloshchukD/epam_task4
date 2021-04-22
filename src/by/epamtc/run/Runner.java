@@ -21,12 +21,12 @@ public class Runner {
         System.out.println(CharTextHandler.replaceWordsWithSubstring(text3, "AAAAA", 3));
         System.out.println(RegularExpressionHandler.replaceWordsWithSubstring(text3, "AAAAA", 3));
 
-        String text4 = " hello, its, me.  ";
+        String text4 = "hello, its, me.  ";
         System.out.println(StringTextHandler.removeAllCharacters(text4));
         System.out.println(CharTextHandler.removeAllCharacters(text4));
         System.out.println(RegularExpressionHandler.removeAllCharacters(text4));
 
-        String text5 = "фыва, фыа, про, лкец, зло.";
+        String text5 = "Фыва, Фыа, Про, лкец, зло.";
         System.out.println(StringTextHandler.removeWordsStartingWithConsonant(text5, 3));
         System.out.println(CharTextHandler.removeWordsStartingWithConsonant(text5, 3));
         System.out.println(RegularExpressionHandler.removeWordsStartingWithConsonant(text5, 3));
