@@ -15,22 +15,22 @@ public class Runner {
         System.out.println(CharTextHandler.replaceEachWordLetter(text, 'P', 3));
         System.out.println(RegularExpressionHandler.replaceEachWordLetter(text, 'P', 3));
 
-        text = "hfPA, sfhjP, sflkjPO";
+        text = "    hfPA,    sfhjP,    sflkjPO   ";
         System.out.println(StringTextHandler.correctWrongLetter(text));
         System.out.println(CharTextHandler.correctWrongLetter(text));
         System.out.println(RegularExpressionHandler.correctWrongLetter(text));
 
-        text = "hfP, sfhd, sfg, dsdaf.";
+        text = "    hfP,   sfhd,   sfg,   dsdaf.   ";
         System.out.println(StringTextHandler.replaceWordsWithSubstring(text, "AAAAA", 3));
         System.out.println(CharTextHandler.replaceWordsWithSubstring(text, "AAAAA", 3));
         System.out.println(RegularExpressionHandler.replaceWordsWithSubstring(text, "AAAAA", 3));
 
-        text = "hello, its, me.  ";
+        text = "   hello, its,    me.    ";
         System.out.println(StringTextHandler.removeAllCharacters(text));
         System.out.println(CharTextHandler.removeAllCharacters(text));
         System.out.println(RegularExpressionHandler.removeAllCharacters(text));
 
-        text = "Фыва, Фыа, Про, лкец, зло.";
+        text = "   Фыва,    Фыа,    Про,    лкец,   зло.  ";
         System.out.println(StringTextHandler.removeWordsStartingWithConsonant(text, 3));
         System.out.println(CharTextHandler.removeWordsStartingWithConsonant(text, 3));
         System.out.println(RegularExpressionHandler.removeWordsStartingWithConsonant(text, 3));

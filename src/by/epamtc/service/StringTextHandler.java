@@ -9,8 +9,14 @@ public class StringTextHandler {
 
     public static final String[] PUNCTUATION_MARKS = {".", ",", ":", ";", "!", "?", "-"};
 
+    public static final char WRONG_LETTER = 'A';
+
+    public static final char WRONG_LETTER_PREFIX = 'P';
+
+    public static final char CORRECT_LETTER = 'O';
+
     public static String replaceEachWordLetter(String text, String symbol, int letterNumber) {
-        String[] words = textToStringArray(text.trim());
+        String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -29,7 +35,7 @@ public class StringTextHandler {
     }
 
     public static String correctWrongLetter(String text) {
-        String[] words = textToStringArray(text.trim());
+        String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
@@ -37,8 +43,9 @@ public class StringTextHandler {
             if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
                 currentWordLength--;
             }
-            if (word.charAt(currentWordLength - 1) == 'A' && word.charAt(currentWordLength - 2) == 'P') {
-                word = word.replace('A', 'O');
+            if (word.charAt(currentWordLength - 1) == WRONG_LETTER
+                    && word.charAt(currentWordLength - 2) == WRONG_LETTER_PREFIX) {
+                word = word.replace(WRONG_LETTER, CORRECT_LETTER);
                 words[i] = word;
             }
         }
@@ -47,7 +54,7 @@ public class StringTextHandler {
     }
 
     public static String replaceWordsWithSubstring(String text, String substring, int wordLength) {
-        String[] words = textToStringArray(text.trim());
+        String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -66,7 +73,7 @@ public class StringTextHandler {
     }
 
     public static String removeAllCharacters(String text) {
-        String[] words = textToStringArray(text.trim());
+        String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -81,7 +88,7 @@ public class StringTextHandler {
     }
 
     public static String removeWordsStartingWithConsonant(String text, int wordLength) {
-        String[] words = textToStringArray(text.trim());
+        String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
             StringBuilder word = new StringBuilder(words[i]);
@@ -99,7 +106,7 @@ public class StringTextHandler {
         return wordsToString(words);
     }
 
-    public static boolean isConsonantLetter(String letter) {
+    private static boolean isConsonantLetter(String letter) {
         boolean result = false;
         for (String consonantLetter : CONSONANT_LETTERS) {
             if (consonantLetter.equalsIgnoreCase(letter)) {
@@ -110,7 +117,7 @@ public class StringTextHandler {
         return result;
     }
 
-    public static boolean isPunctuationMark(String symbol) {
+    private static boolean isPunctuationMark(String symbol) {
         boolean result = false;
         for (String punctuationMark : PUNCTUATION_MARKS) {
             if (punctuationMark.equals(symbol)) {
@@ -121,7 +128,7 @@ public class StringTextHandler {
         return result;
     }
 
-    public static String wordsToString(String[] words) {
+    private static String wordsToString(String[] words) {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String word : words) {
@@ -134,10 +141,11 @@ public class StringTextHandler {
         return stringBuilder.toString();
     }
 
-    public static String[] textToStringArray(String text) {
+    private static String[] textToStringArray(String text) {
+        String formattedText = removeRedundantSeparators(text);
         int wordsInTextCounter = 0;
-        for (int i = 0; i < text.length(); i++) {
-            if (text.substring(i, i + 1).equals(WORDS_SEPARATOR) || i == text.length() - 1) {
+        for (int i = 0; i < formattedText.length(); i++) {
+            if (formattedText.substring(i, i + 1).equals(WORDS_SEPARATOR) || i == formattedText.length() - 1) {
                 wordsInTextCounter++;
             }
         }
@@ -146,13 +154,14 @@ public class StringTextHandler {
         int previousSeparatorIndex = -1;
         int currentWordLength = 0;
         int wordsArrayAddingIndex = 0;
-        for (int i = 0; i < text.length(); i++) {
-            boolean isSeparator = text.substring(i, i + 1).equals(WORDS_SEPARATOR);
+        for (int i = 0; i < formattedText.length(); i++) {
+            boolean isSeparator = formattedText.substring(i, i + 1).equals(WORDS_SEPARATOR);
             if (!isSeparator) {
                 currentWordLength++;
             }
-            if (isSeparator || i == text.length() - 1) {
-                String currentWord = text.substring(previousSeparatorIndex + 1, previousSeparatorIndex + currentWordLength + 1);
+            if (isSeparator || i == formattedText.length() - 1) {
+                String currentWord = formattedText.substring(previousSeparatorIndex + 1,
+                        previousSeparatorIndex + currentWordLength + 1);
                 words[wordsArrayAddingIndex] = currentWord;
                 wordsArrayAddingIndex++;
 
@@ -162,6 +171,23 @@ public class StringTextHandler {
         }
 
         return words;
+    }
+
+    private static String removeRedundantSeparators(String text) {
+        String trimmedText = text.trim();
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < trimmedText.length(); i++) {
+            if (i != 0 || i != trimmedText.length() - 1) {
+                if (trimmedText.substring(i, i + 1).equals(WORDS_SEPARATOR)
+                        && trimmedText.substring(i - 1, i).equals(WORDS_SEPARATOR)) {
+                    continue;
+                }
+            }
+            result.append(trimmedText.substring(i, i + 1));
+        }
+
+        return result.toString();
     }
 
 }

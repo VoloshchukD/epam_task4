@@ -9,8 +9,6 @@ public class RegularExpressionHandler {
 
     public static final String CONSONANT_LETTERS = "^[бвгджзйклмнпрстфхцчшщ]";
 
-    public static final String PUNCTUATION_MARKS = ".,:;!?-";
-
     public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]?)(\\s?)";
 
     public static final String DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION = "([а-яА-Я]+)([.,:;!?-]?)(\\s?)";
@@ -20,8 +18,7 @@ public class RegularExpressionHandler {
     public static final String FIND_CONCRETE_LENGTH_STRING_REGULAR_EXPRESSION_PART2 = "})([.,]?)(\\s+)";
 
     public static String replaceEachWordLetter(String text, char symbol, int letterNumber) {
-        Pattern pattern = Pattern.compile(DIVIDE_TEXT_REGULAR_EXPRESSION);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
@@ -38,8 +35,7 @@ public class RegularExpressionHandler {
     }
 
     public static String correctWrongLetter(String text) {
-        Pattern pattern = Pattern.compile(DIVIDE_TEXT_REGULAR_EXPRESSION);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
@@ -57,17 +53,14 @@ public class RegularExpressionHandler {
     }
 
     public static String replaceWordsWithSubstring(String text, String substring, int wordLength) {
-        Pattern pattern = Pattern.compile(DIVIDE_TEXT_REGULAR_EXPRESSION);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
-            StringBuilder currentWord = new StringBuilder();
             if (matcher.group(1).length() == wordLength) {
-                currentWord.append(substring);
-                currentWord.append(matcher.group(2));
-                currentWord.append(matcher.group(3));
-                result.append(currentWord);
+                result.append(substring);
+                result.append(matcher.group(2));
+                result.append(matcher.group(3));
             } else {
                 result.append(matcher.group());
             }
@@ -77,8 +70,7 @@ public class RegularExpressionHandler {
     }
 
     public static String removeAllCharacters(String text) {
-        Pattern pattern = Pattern.compile(DIVIDE_TEXT_REGULAR_EXPRESSION);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
@@ -90,25 +82,32 @@ public class RegularExpressionHandler {
     }
 
     public static String removeWordsStartingWithConsonant(String text, int wordLength) {
-        Pattern pattern = Pattern.compile(DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = createMatcher(text, DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
-            StringBuilder currentWord = new StringBuilder();
-            Pattern wordPattern = Pattern.compile(CONSONANT_LETTERS, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-            Matcher wordMatcher = wordPattern.matcher(matcher.group(1));
+            Matcher wordMatcher = createMatcher(matcher.group(1), CONSONANT_LETTERS, true);
 
             if (matcher.group(1).length() != wordLength || !wordMatcher.find()) {
-                currentWord.append(matcher.group(1));
+                result.append(matcher.group(1));
             }
 
-            currentWord.append(matcher.group(2));
-            currentWord.append(matcher.group(3));
-            result.append(currentWord);
+            result.append(matcher.group(2));
+            result.append(matcher.group(3));
         }
 
         return result.toString();
+    }
+
+    private static Matcher createMatcher(String text, String regularExpression, boolean caseInsensitive) {
+        Pattern pattern;
+        if (caseInsensitive) {
+            pattern = Pattern.compile(regularExpression, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        } else {
+            pattern = Pattern.compile(regularExpression);
+        }
+        Matcher matcher = pattern.matcher(text);
+        return matcher;
     }
 
 }
