@@ -1,5 +1,8 @@
 package by.epamtc.service;
 
+import by.epamtc.exception.NoSuchTextException;
+import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
+
 public class CharTextHandler {
 
     public static final char WORDS_SEPARATOR = ' ';
@@ -15,7 +18,15 @@ public class CharTextHandler {
 
     public static final char CORRECT_LETTER = 'O';
 
-    public static String replaceEachWordLetter(String text, char symbol, int letterNumber) {
+    public static String replaceEachWordLetter(String text, char symbol, int letterNumber)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (letterNumber < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + letterNumber);
+        }
+
         char[] chars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
@@ -36,7 +47,10 @@ public class CharTextHandler {
         return new String(chars);
     }
 
-    public static String correctWrongLetter(String text) {
+    public static String correctWrongLetter(String text) throws NoSuchTextException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
         char[] chars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
@@ -58,7 +72,14 @@ public class CharTextHandler {
         return new String(chars);
     }
 
-    public static String replaceWordsWithSubstring(String text, String substring, int wordLength) {
+    public static String replaceWordsWithSubstring(String text, String substring, int wordLength)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (wordLength < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
+        }
         char[] chars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
@@ -97,7 +118,10 @@ public class CharTextHandler {
         return new String(chars);
     }
 
-    public static String removeAllCharacters(String text) {
+    public static String removeAllCharacters(String text) throws NoSuchTextException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
         char[] chars = removeRedundantSeparators(text.toCharArray());
 
         int removedCharsCounter = -1;
@@ -111,7 +135,14 @@ public class CharTextHandler {
         return charsToString(chars, removedCharsCounter);
     }
 
-    public static String removeWordsStartingWithConsonant(String text, int wordLength) {
+    public static String removeWordsStartingWithConsonant(String text, int wordLength)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (wordLength < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
+        }
         char[] chars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;

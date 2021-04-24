@@ -1,5 +1,7 @@
 package by.epamtc.run;
 
+import by.epamtc.exception.NoSuchTextException;
+import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
 import by.epamtc.exception.WrongFileNameException;
 import by.epamtc.service.CharTextHandler;
 import by.epamtc.service.RegularExpressionHandler;
@@ -9,7 +11,8 @@ import by.epamtc.service.TextReader;
 import java.io.FileNotFoundException;
 
 public class Runner {
-    public static void main(String[] args) throws FileNotFoundException, WrongFileNameException {
+    public static void main(String[] args) throws FileNotFoundException,
+            WrongFileNameException, TextHandlerIndexOutOfBoundsException, NoSuchTextException {
         String text = TextReader.readTextFromFile("data.txt");
         System.out.println(StringTextHandler.replaceEachWordLetter(text, "P", 3));
         System.out.println(CharTextHandler.replaceEachWordLetter(text, 'P', 3));

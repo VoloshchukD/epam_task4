@@ -1,5 +1,8 @@
 package by.epamtc.service;
 
+import by.epamtc.exception.NoSuchTextException;
+import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +20,13 @@ public class RegularExpressionHandler {
 
     public static final String FIND_CONCRETE_LENGTH_STRING_REGULAR_EXPRESSION_PART2 = "})([.,]?)(\\s+)";
 
-    public static String replaceEachWordLetter(String text, char symbol, int letterNumber) {
+    public static String replaceEachWordLetter(String text, char symbol, int letterNumber) throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (letterNumber < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + letterNumber);
+        }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
@@ -34,7 +43,10 @@ public class RegularExpressionHandler {
         return result.toString();
     }
 
-    public static String correctWrongLetter(String text) {
+    public static String correctWrongLetter(String text) throws NoSuchTextException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
@@ -52,7 +64,14 @@ public class RegularExpressionHandler {
         return result.toString();
     }
 
-    public static String replaceWordsWithSubstring(String text, String substring, int wordLength) {
+    public static String replaceWordsWithSubstring(String text, String substring, int wordLength)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (wordLength < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
+        }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
@@ -69,7 +88,10 @@ public class RegularExpressionHandler {
         return result.toString();
     }
 
-    public static String removeAllCharacters(String text) {
+    public static String removeAllCharacters(String text) throws NoSuchTextException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
@@ -81,7 +103,14 @@ public class RegularExpressionHandler {
         return result.toString();
     }
 
-    public static String removeWordsStartingWithConsonant(String text, int wordLength) {
+    public static String removeWordsStartingWithConsonant(String text, int wordLength)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (wordLength < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
+        }
         Matcher matcher = createMatcher(text, DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();

@@ -1,5 +1,8 @@
 package by.epamtc.service;
 
+import by.epamtc.exception.NoSuchTextException;
+import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
+
 public class StringTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";
@@ -15,7 +18,14 @@ public class StringTextHandler {
 
     public static final char CORRECT_LETTER = 'O';
 
-    public static String replaceEachWordLetter(String text, String symbol, int letterNumber) {
+    public static String replaceEachWordLetter(String text, String symbol, int letterNumber)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (letterNumber < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + letterNumber);
+        }
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
@@ -34,7 +44,10 @@ public class StringTextHandler {
         return wordsToString(words);
     }
 
-    public static String correctWrongLetter(String text) {
+    public static String correctWrongLetter(String text) throws NoSuchTextException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
@@ -53,7 +66,14 @@ public class StringTextHandler {
         return wordsToString(words);
     }
 
-    public static String replaceWordsWithSubstring(String text, String substring, int wordLength) {
+    public static String replaceWordsWithSubstring(String text, String substring, int wordLength)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (wordLength < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
+        }
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
@@ -72,7 +92,10 @@ public class StringTextHandler {
         return wordsToString(words);
     }
 
-    public static String removeAllCharacters(String text) {
+    public static String removeAllCharacters(String text) throws NoSuchTextException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
@@ -87,7 +110,14 @@ public class StringTextHandler {
         return wordsToString(words);
     }
 
-    public static String removeWordsStartingWithConsonant(String text, int wordLength) {
+    public static String removeWordsStartingWithConsonant(String text, int wordLength)
+            throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
+        if (text == null) {
+            throw new NoSuchTextException("No text present");
+        }
+        if (wordLength < 0) {
+            throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
+        }
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
