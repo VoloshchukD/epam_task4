@@ -6,15 +6,15 @@ import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegularExpressionHandler {
+public class RegularExpressionTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";
 
     public static final String CONSONANT_LETTERS = "^[бвгджзйклмнпрстфхцчшщ]";
 
-    public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]?)(\\s?)";
+    public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]?\\s?)";
 
-    public static final String DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION = "([а-яА-Я]+)([.,:;!?-]?)(\\s?)";
+    public static final String DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION = "([а-яА-Я]+)([.,:;!?-]?\\s?)";
 
     public static final String FIND_CONCRETE_LENGTH_STRING_REGULAR_EXPRESSION_PART1 = "(\\b\\w{";
 
@@ -36,7 +36,6 @@ public class RegularExpressionHandler {
                 currentWord.setCharAt(letterNumber - 1, symbol);
             }
             currentWord.append(matcher.group(2));
-            currentWord.append(matcher.group(3));
             result.append(currentWord);
         }
 
@@ -57,7 +56,6 @@ public class RegularExpressionHandler {
                 currentWord.setCharAt(currentWord.length() - 1, 'O');
             }
             currentWord.append(matcher.group(2));
-            currentWord.append(matcher.group(3));
             result.append(currentWord);
         }
 
@@ -79,7 +77,6 @@ public class RegularExpressionHandler {
             if (matcher.group(1).length() == wordLength) {
                 result.append(substring);
                 result.append(matcher.group(2));
-                result.append(matcher.group(3));
             } else {
                 result.append(matcher.group());
             }
@@ -122,7 +119,6 @@ public class RegularExpressionHandler {
             }
 
             result.append(matcher.group(2));
-            result.append(matcher.group(3));
         }
 
         return result.toString();

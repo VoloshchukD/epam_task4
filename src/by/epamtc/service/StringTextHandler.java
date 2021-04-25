@@ -12,11 +12,11 @@ public class StringTextHandler {
 
     public static final String[] PUNCTUATION_MARKS = {".", ",", ":", ";", "!", "?", "-"};
 
-    public static final char WRONG_LETTER = 'A';
+    public static final String WRONG_LETTER = "A";
 
-    public static final char WRONG_LETTER_PREFIX = 'P';
+    public static final String WRONG_LETTER_PREFIX = "P";
 
-    public static final char CORRECT_LETTER = 'O';
+    public static final String CORRECT_LETTER = "O";
 
     public static String replaceEachWordLetter(String text, String symbol, int letterNumber)
             throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
@@ -56,8 +56,8 @@ public class StringTextHandler {
             if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
                 currentWordLength--;
             }
-            if (word.charAt(currentWordLength - 1) == WRONG_LETTER
-                    && word.charAt(currentWordLength - 2) == WRONG_LETTER_PREFIX) {
+            if (word.substring(currentWordLength - 1, currentWordLength).equals(WRONG_LETTER)
+                    && word.substring(currentWordLength - 2, currentWordLength - 1).equals(WRONG_LETTER_PREFIX)) {
                 word = word.replace(WRONG_LETTER, CORRECT_LETTER);
                 words[i] = word;
             }
@@ -102,7 +102,7 @@ public class StringTextHandler {
             StringBuilder word = new StringBuilder(words[i]);
             int currentWordLength = word.length();
             if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
-                word.deleteCharAt(currentWordLength - 1);
+                word.delete(currentWordLength - 1, currentWordLength);
                 words[i] = word.toString();
             }
         }
@@ -125,7 +125,7 @@ public class StringTextHandler {
             int currentWordLength = word.length();
             String punctuationMark = "";
             if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
-                punctuationMark = String.valueOf(word.charAt(currentWordLength - 1));
+                punctuationMark = word.substring(currentWordLength - 1, currentWordLength);
                 currentWordLength--;
             }
             if (currentWordLength == wordLength && isConsonantLetter(word.substring(0, 1))) {
