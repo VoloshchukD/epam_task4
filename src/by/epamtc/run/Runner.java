@@ -18,7 +18,7 @@ public class Runner {
         System.out.println(CharTextHandler.replaceEachWordLetter(text, 'P', 3));
         System.out.println(RegularExpressionTextHandler.replaceEachWordLetter(text, 'P', 3));
 
-        text = "    hfPA,    sfhjP,    sflkjPO   ";
+        text = "    PAhfPA,    apsfhjP,    sflkjPO   ";
         System.out.println(StringTextHandler.correctWrongLetter(text));
         System.out.println(CharTextHandler.correctWrongLetter(text));
         System.out.println(RegularExpressionTextHandler.correctWrongLetter(text));

@@ -12,13 +12,17 @@ public class RegularExpressionTextHandler {
 
     public static final String CONSONANT_LETTERS = "^[бвгджзйклмнпрстфхцчшщ]";
 
-    public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]?\\s?)";
+    public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]*\\s?)";
 
-    public static final String DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION = "([а-яА-Я]+)([.,:;!?-]?\\s?)";
+    public static final String DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION = "([а-яА-Я]+)([.,:;!?-]*\\s?)";
 
-    public static final String FIND_CONCRETE_LENGTH_STRING_REGULAR_EXPRESSION_PART1 = "(\\b\\w{";
+    public static final char WRONG_LETTER = 'A';
 
-    public static final String FIND_CONCRETE_LENGTH_STRING_REGULAR_EXPRESSION_PART2 = "})([.,]?)(\\s+)";
+    public static final char WRONG_LETTER_PREFIX = 'P';
+
+    public static final char CORRECT_LETTER = 'O';
+
+    public static final String FIND_MISTAKE_REGULAR_EXPRESSION = "(" + WRONG_LETTER_PREFIX + ")(" + WRONG_LETTER + ")";
 
     public static String replaceEachWordLetter(String text, char symbol, int letterNumber) throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
         if (text == null) {
@@ -51,10 +55,12 @@ public class RegularExpressionTextHandler {
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
             StringBuilder currentWord = new StringBuilder(matcher.group(1));
-            if (currentWord.charAt(currentWord.length() - 1) == 'A'
-                    && currentWord.charAt(currentWord.length() - 2) == 'P') {
-                currentWord.setCharAt(currentWord.length() - 1, 'O');
+            Matcher mistakeMatcher = createMatcher(currentWord.toString(), FIND_MISTAKE_REGULAR_EXPRESSION, false);
+
+            while (mistakeMatcher.find()) {
+                currentWord.setCharAt(mistakeMatcher.start(2), CORRECT_LETTER);
             }
+
             currentWord.append(matcher.group(2));
             result.append(currentWord);
         }

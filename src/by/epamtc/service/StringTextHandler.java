@@ -3,6 +3,7 @@ package by.epamtc.service;
 import by.epamtc.exception.NoSuchTextException;
 import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
 
+//Methods do not use charAt() method calls and explicit work with the type char
 public class StringTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";
@@ -56,10 +57,12 @@ public class StringTextHandler {
             if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
                 currentWordLength--;
             }
-            if (word.substring(currentWordLength - 1, currentWordLength).equals(WRONG_LETTER)
-                    && word.substring(currentWordLength - 2, currentWordLength - 1).equals(WRONG_LETTER_PREFIX)) {
-                word = word.replace(WRONG_LETTER, CORRECT_LETTER);
-                words[i] = word;
+            for (int j = 1; j < currentWordLength; j++) {
+                if (word.substring(j, j + 1).equals(WRONG_LETTER)
+                        && word.substring(j - 1, j).equals(WRONG_LETTER_PREFIX)) {
+                    word = word.replace(WRONG_LETTER, CORRECT_LETTER);
+                    words[i] = word;
+                }
             }
         }
 

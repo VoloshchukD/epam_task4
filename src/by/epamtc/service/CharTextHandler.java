@@ -60,9 +60,10 @@ public class CharTextHandler {
                 currentWordLength++;
             }
             if (chars[i] == WORDS_SEPARATOR || i == chars.length - 1) {
-                if (chars[previousSeparatorIndex + currentWordLength] == WRONG_LETTER
-                        && chars[previousSeparatorIndex + currentWordLength - 1] == WRONG_LETTER_PREFIX) {
-                    chars[previousSeparatorIndex + currentWordLength] = CORRECT_LETTER;
+                for (int j = previousSeparatorIndex + 2; j <= previousSeparatorIndex + currentWordLength; j++) {
+                    if (chars[j] == WRONG_LETTER && chars[j - 1] == WRONG_LETTER_PREFIX) {
+                        chars[j] = CORRECT_LETTER;
+                    }
                 }
                 previousSeparatorIndex = i;
                 currentWordLength = 0;
