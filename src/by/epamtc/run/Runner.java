@@ -33,7 +33,7 @@ public class Runner {
         System.out.println(CharTextHandler.removeAllCharacters(text));
         System.out.println(RegularExpressionTextHandler.removeAllCharacters(text));
 
-        text = "   Фыва,    Фыа,    Про,    лкец,   зло.  ";
+        text = "   Fojd,    Hkd,    Pro,    jkds,   jkh.  ";
         System.out.println(StringTextHandler.removeWordsStartingWithConsonant(text, 3));
         System.out.println(CharTextHandler.removeWordsStartingWithConsonant(text, 3));
         System.out.println(RegularExpressionTextHandler.removeWordsStartingWithConsonant(text, 3));

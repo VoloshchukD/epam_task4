@@ -8,8 +8,8 @@ public class StringTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";
 
-    public static final String[] CONSONANT_LETTERS = {"б", "в", "г", "д", "ж", "з", "й", "к", "л", "м", "н",
-            "п", "р", "с", "т", "ф", "х", "ц", "ч", "ш", "щ"};
+    public static final String[] CONSONANT_LETTERS = {"b", "c", "d", "f", "g", "h", "j", "k", "l",
+            "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"};
 
     public static final String[] PUNCTUATION_MARKS = {".", ",", ":", ";", "!", "?", "-"};
 
@@ -30,15 +30,15 @@ public class StringTextHandler {
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
-            StringBuilder word = new StringBuilder(words[i]);
-            int currentWordLength = word.length();
-            if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
+            StringBuilder currentWord = new StringBuilder(words[i]);
+            int currentWordLength = currentWord.length();
+            if (isPunctuationMark(currentWord.substring(currentWordLength - 1, currentWordLength))) {
                 currentWordLength--;
             }
             if (letterNumber <= currentWordLength) {
                 int replaceIndex = letterNumber - 1;
-                word.replace(replaceIndex, replaceIndex + 1, symbol);
-                words[i] = word.toString();
+                currentWord.replace(replaceIndex, replaceIndex + 1, symbol);
+                words[i] = currentWord.toString();
             }
         }
 
@@ -52,16 +52,16 @@ public class StringTextHandler {
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-            int currentWordLength = word.length();
-            if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
+            String currentWord = words[i];
+            int currentWordLength = currentWord.length();
+            if (isPunctuationMark(currentWord.substring(currentWordLength - 1, currentWordLength))) {
                 currentWordLength--;
             }
             for (int j = 1; j < currentWordLength; j++) {
-                if (word.substring(j, j + 1).equals(WRONG_LETTER)
-                        && word.substring(j - 1, j).equals(WRONG_LETTER_PREFIX)) {
-                    word = word.replace(WRONG_LETTER, CORRECT_LETTER);
-                    words[i] = word;
+                if (currentWord.substring(j, j + 1).equals(WRONG_LETTER)
+                        && currentWord.substring(j - 1, j).equals(WRONG_LETTER_PREFIX)) {
+                    currentWord = currentWord.replace(WRONG_LETTER, CORRECT_LETTER);
+                    words[i] = currentWord;
                 }
             }
         }
@@ -80,11 +80,11 @@ public class StringTextHandler {
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
-            StringBuilder word = new StringBuilder(words[i]);
-            int currentWordLength = word.length();
+            StringBuilder currentWord = new StringBuilder(words[i]);
+            int currentWordLength = currentWord.length();
             String punctuationMark = "";
-            if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
-                punctuationMark = word.substring(currentWordLength - 1);
+            if (isPunctuationMark(currentWord.substring(currentWordLength - 1, currentWordLength))) {
+                punctuationMark = currentWord.substring(currentWordLength - 1);
                 currentWordLength--;
             }
             if (currentWordLength == wordLength) {
@@ -102,11 +102,11 @@ public class StringTextHandler {
         String[] words = textToStringArray(text);
 
         for (int i = 0; i < words.length; i++) {
-            StringBuilder word = new StringBuilder(words[i]);
-            int currentWordLength = word.length();
-            if (isPunctuationMark(word.substring(currentWordLength - 1, currentWordLength))) {
-                word.delete(currentWordLength - 1, currentWordLength);
-                words[i] = word.toString();
+            StringBuilder currentWord = new StringBuilder(words[i]);
+            int currentWordLength = currentWord.length();
+            if (isPunctuationMark(currentWord.substring(currentWordLength - 1, currentWordLength))) {
+                currentWord.delete(currentWordLength - 1, currentWordLength);
+                words[i] = currentWord.toString();
             }
         }
 

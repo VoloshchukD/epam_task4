@@ -10,11 +10,9 @@ public class RegularExpressionTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";
 
-    public static final String CONSONANT_LETTERS = "^[бвгджзйклмнпрстфхцчшщ]";
+    public static final String CONSONANT_LETTERS = "^[bcdfghjklmnpqrstvwxyz]";
 
     public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]*\\s?)";
-
-    public static final String DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION = "([а-яА-Я]+)([.,:;!?-]*\\s?)";
 
     public static final char WRONG_LETTER = 'A';
 
@@ -52,7 +50,7 @@ public class RegularExpressionTextHandler {
         }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder resultText = new StringBuilder();
         while (matcher.find()) {
             StringBuilder currentWord = new StringBuilder(matcher.group(1));
             Matcher mistakeMatcher = createMatcher(currentWord.toString(), FIND_MISTAKE_REGULAR_EXPRESSION, false);
@@ -62,10 +60,10 @@ public class RegularExpressionTextHandler {
             }
 
             currentWord.append(matcher.group(2));
-            result.append(currentWord);
+            resultText.append(currentWord);
         }
 
-        return result.toString();
+        return resultText.toString();
     }
 
     public static String replaceWordsWithSubstring(String text, String substring, int wordLength)
@@ -78,17 +76,17 @@ public class RegularExpressionTextHandler {
         }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder resultText = new StringBuilder();
         while (matcher.find()) {
             if (matcher.group(1).length() == wordLength) {
-                result.append(substring);
-                result.append(matcher.group(2));
+                resultText.append(substring);
+                resultText.append(matcher.group(2));
             } else {
-                result.append(matcher.group());
+                resultText.append(matcher.group());
             }
         }
 
-        return result.toString();
+        return resultText.toString();
     }
 
     public static String removeAllCharacters(String text) throws NoSuchTextException {
@@ -97,13 +95,13 @@ public class RegularExpressionTextHandler {
         }
         Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder resultText = new StringBuilder();
         while (matcher.find()) {
-            result.append(matcher.group(1));
-            result.append(WORDS_SEPARATOR);
+            resultText.append(matcher.group(1));
+            resultText.append(WORDS_SEPARATOR);
         }
 
-        return result.toString();
+        return resultText.toString();
     }
 
     public static String removeWordsStartingWithConsonant(String text, int wordLength)
@@ -114,26 +112,26 @@ public class RegularExpressionTextHandler {
         if (wordLength < 0) {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
         }
-        Matcher matcher = createMatcher(text, DIVIDE_RUSSIAN_TEXT_REGULAR_EXPRESSION, false);
+        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder resultText = new StringBuilder();
         while (matcher.find()) {
             Matcher wordMatcher = createMatcher(matcher.group(1), CONSONANT_LETTERS, true);
 
             if (matcher.group(1).length() != wordLength || !wordMatcher.find()) {
-                result.append(matcher.group(1));
+                resultText.append(matcher.group(1));
             }
 
-            result.append(matcher.group(2));
+            resultText.append(matcher.group(2));
         }
 
-        return result.toString();
+        return resultText.toString();
     }
 
     private static Matcher createMatcher(String text, String regularExpression, boolean caseInsensitive) {
         Pattern pattern;
         if (caseInsensitive) {
-            pattern = Pattern.compile(regularExpression, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+            pattern = Pattern.compile(regularExpression, Pattern.CASE_INSENSITIVE);
         } else {
             pattern = Pattern.compile(regularExpression);
         }

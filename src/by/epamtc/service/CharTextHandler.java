@@ -7,8 +7,8 @@ public class CharTextHandler {
 
     public static final char WORDS_SEPARATOR = ' ';
 
-    public static final char[] CONSONANT_LETTERS = {'б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н',
-            'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ'};
+    public static final char[] CONSONANT_LETTERS = {'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k',
+            'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'};
 
     public static final char[] PUNCTUATION_MARKS = {'.', ',', ':', ';', '!', '?', '-'};
 
@@ -17,6 +17,8 @@ public class CharTextHandler {
     public static final char WRONG_LETTER_PREFIX = 'P';
 
     public static final char CORRECT_LETTER = 'O';
+
+    public static final int ENCODING_UPPERCASE_AND_LOWERCASE_POSITION_DIFFERENCE = 32;
 
     public static String replaceEachWordLetter(String text, char symbol, int letterNumber)
             throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
@@ -27,42 +29,42 @@ public class CharTextHandler {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + letterNumber);
         }
 
-        char[] chars = removeRedundantSeparators(text.toCharArray());
+        char[] textChars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
         int currentWordLength = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (!isPunctuationMark(chars[i]) && chars[i] != WORDS_SEPARATOR) {
+        for (int i = 0; i < textChars.length; i++) {
+            if (!isPunctuationMark(textChars[i]) && textChars[i] != WORDS_SEPARATOR) {
                 currentWordLength++;
             }
-            if (chars[i] == WORDS_SEPARATOR || i == chars.length - 1) {
+            if (textChars[i] == WORDS_SEPARATOR || i == textChars.length - 1) {
                 if (currentWordLength >= letterNumber) {
-                    chars[previousSeparatorIndex + letterNumber] = symbol;
+                    textChars[previousSeparatorIndex + letterNumber] = symbol;
                 }
                 previousSeparatorIndex = i;
                 currentWordLength = 0;
             }
         }
 
-        return new String(chars);
+        return new String(textChars);
     }
 
     public static String correctWrongLetter(String text) throws NoSuchTextException {
         if (text == null) {
             throw new NoSuchTextException("No text present");
         }
-        char[] chars = removeRedundantSeparators(text.toCharArray());
+        char[] textChars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
         int currentWordLength = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (!isPunctuationMark(chars[i]) && chars[i] != WORDS_SEPARATOR) {
+        for (int i = 0; i < textChars.length; i++) {
+            if (!isPunctuationMark(textChars[i]) && textChars[i] != WORDS_SEPARATOR) {
                 currentWordLength++;
             }
-            if (chars[i] == WORDS_SEPARATOR || i == chars.length - 1) {
+            if (textChars[i] == WORDS_SEPARATOR || i == textChars.length - 1) {
                 for (int j = previousSeparatorIndex + 2; j <= previousSeparatorIndex + currentWordLength; j++) {
-                    if (chars[j] == WRONG_LETTER && chars[j - 1] == WRONG_LETTER_PREFIX) {
-                        chars[j] = CORRECT_LETTER;
+                    if (textChars[j] == WRONG_LETTER && textChars[j - 1] == WRONG_LETTER_PREFIX) {
+                        textChars[j] = CORRECT_LETTER;
                     }
                 }
                 previousSeparatorIndex = i;
@@ -70,7 +72,7 @@ public class CharTextHandler {
             }
         }
 
-        return new String(chars);
+        return new String(textChars);
     }
 
     public static String replaceWordsWithSubstring(String text, String substring, int wordLength)
@@ -81,59 +83,59 @@ public class CharTextHandler {
         if (wordLength < 0) {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
         }
-        char[] chars = removeRedundantSeparators(text.toCharArray());
+        char[] textChars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
         int currentWordLength = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (!isPunctuationMark(chars[i]) && chars[i] != WORDS_SEPARATOR) {
+        for (int i = 0; i < textChars.length; i++) {
+            if (!isPunctuationMark(textChars[i]) && textChars[i] != WORDS_SEPARATOR) {
                 currentWordLength++;
             }
-            if (chars[i] == WORDS_SEPARATOR || i == chars.length - 1) {
+            if (textChars[i] == WORDS_SEPARATOR || i == textChars.length - 1) {
                 if (currentWordLength == wordLength) {
-                    char[] newChar = new char[chars.length + substring.length() - currentWordLength];
+                    char[] newChars = new char[textChars.length + substring.length() - currentWordLength];
 
                     for (int j = 0; j <= previousSeparatorIndex; j++) {
-                        newChar[j] = chars[j];
+                        newChars[j] = textChars[j];
                     }
 
-                    char[] substringAsChar = substring.toCharArray();
+                    char[] substringChars = substring.toCharArray();
                     int k = previousSeparatorIndex + 1;
-                    for (int j = 0; j < substringAsChar.length; j++) {
-                        newChar[k] = substringAsChar[j];
+                    for (int j = 0; j < substringChars.length; j++) {
+                        newChars[k] = substringChars[j];
                         k++;
                     }
 
-                    for (int j = previousSeparatorIndex + currentWordLength + 1; j < chars.length; j++) {
-                        newChar[k] = chars[j];
+                    for (int j = previousSeparatorIndex + currentWordLength + 1; j < textChars.length; j++) {
+                        newChars[k] = textChars[j];
                         k++;
                     }
 
-                    chars = newChar;
+                    textChars = newChars;
                 }
                 previousSeparatorIndex = i;
                 currentWordLength = 0;
             }
         }
 
-        return new String(chars);
+        return new String(textChars);
     }
 
     public static String removeAllCharacters(String text) throws NoSuchTextException {
         if (text == null) {
             throw new NoSuchTextException("No text present");
         }
-        char[] chars = removeRedundantSeparators(text.toCharArray());
+        char[] textChars = removeRedundantSeparators(text.toCharArray());
 
         int removedCharsCounter = -1;
-        for (int i = 0; i < chars.length; i++) {
-            if (isPunctuationMark(chars[i])) {
-                chars[i] = '\u0000';
+        for (int i = 0; i < textChars.length; i++) {
+            if (isPunctuationMark(textChars[i])) {
+                textChars[i] = '\u0000';
                 removedCharsCounter++;
             }
         }
 
-        return charsToString(chars, removedCharsCounter);
+        return charsToString(textChars, removedCharsCounter);
     }
 
     public static String removeWordsStartingWithConsonant(String text, int wordLength)
@@ -144,20 +146,20 @@ public class CharTextHandler {
         if (wordLength < 0) {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
         }
-        char[] chars = removeRedundantSeparators(text.toCharArray());
+        char[] textChars = removeRedundantSeparators(text.toCharArray());
 
         int previousSeparatorIndex = -1;
         int currentWordLength = 0;
         int removedCharsCounter = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (!isPunctuationMark(chars[i]) && chars[i] != WORDS_SEPARATOR) {
+        for (int i = 0; i < textChars.length; i++) {
+            if (!isPunctuationMark(textChars[i]) && textChars[i] != WORDS_SEPARATOR) {
                 currentWordLength++;
             }
 
-            if (chars[i] == WORDS_SEPARATOR || i == chars.length - 1) {
-                if (currentWordLength == wordLength && isConsonantLetter(chars[previousSeparatorIndex + 1])) {
+            if (textChars[i] == WORDS_SEPARATOR || i == textChars.length - 1) {
+                if (currentWordLength == wordLength && isConsonantLetter(textChars[previousSeparatorIndex + 1])) {
                     for (int j = previousSeparatorIndex + 1; j < previousSeparatorIndex + currentWordLength + 1; j++) {
-                        chars[j] = '\u0000';
+                        textChars[j] = '\u0000';
                         removedCharsCounter++;
                     }
                 }
@@ -166,7 +168,7 @@ public class CharTextHandler {
             }
         }
 
-        return charsToString(chars, removedCharsCounter);
+        return charsToString(textChars, removedCharsCounter);
     }
 
     private static boolean isPunctuationMark(char character) {
@@ -183,7 +185,8 @@ public class CharTextHandler {
     private static boolean isConsonantLetter(char letter) {
         boolean result = false;
         for (char consonantLetter : CONSONANT_LETTERS) {
-            if (consonantLetter == letter || ((char) (consonantLetter - 32) == letter)) {
+            if (consonantLetter == letter || ((char) (consonantLetter -
+                    ENCODING_UPPERCASE_AND_LOWERCASE_POSITION_DIFFERENCE) == letter)) {
                 result = true;
                 break;
             }
@@ -205,36 +208,36 @@ public class CharTextHandler {
         return new String(resultChars);
     }
 
-    private static char[] removeRedundantSeparators(char[] chars) {
+    private static char[] removeRedundantSeparators(char[] textChars) {
         int removedCharsNumber = 0;
-        for (int i = 0; i < chars.length; i++) {
+        for (int i = 0; i < textChars.length; i++) {
             if (i == 0) {
-                for (int j = i; j < chars.length; j++) {
-                    if (chars[j] == WORDS_SEPARATOR) {
-                        chars[j] = '\u0000';
+                for (int j = i; j < textChars.length; j++) {
+                    if (textChars[j] == WORDS_SEPARATOR) {
+                        textChars[j] = '\u0000';
                         removedCharsNumber++;
                     } else {
                         break;
                     }
                 }
-            } else if (i == chars.length - 1) {
+            } else if (i == textChars.length - 1) {
                 for (int j = i; j >= 0; j--) {
-                    if (chars[j] == WORDS_SEPARATOR) {
-                        chars[j] = '\u0000';
+                    if (textChars[j] == WORDS_SEPARATOR) {
+                        textChars[j] = '\u0000';
                         removedCharsNumber++;
                     } else {
                         break;
                     }
                 }
             } else {
-                if (chars[i] == WORDS_SEPARATOR && chars[i - 1] == WORDS_SEPARATOR) {
-                    chars[i - 1] = '\u0000';
+                if (textChars[i] == WORDS_SEPARATOR && textChars[i - 1] == WORDS_SEPARATOR) {
+                    textChars[i - 1] = '\u0000';
                     removedCharsNumber++;
                 }
             }
         }
 
-        return charsToString(chars, removedCharsNumber).toCharArray();
+        return charsToString(textChars, removedCharsNumber).toCharArray();
     }
 
 }
