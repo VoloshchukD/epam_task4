@@ -3,7 +3,7 @@ package by.epamtc.service;
 import by.epamtc.exception.NoSuchTextException;
 import by.epamtc.exception.TextHandlerIndexOutOfBoundsException;
 
-//Methods do not use charAt() method calls and explicit work with the type char
+//Methods do not use charAt() method calls and do not explicitly work with char type
 public class StringTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";

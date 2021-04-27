@@ -10,10 +10,6 @@ public class RegularExpressionTextHandler {
 
     public static final String WORDS_SEPARATOR = " ";
 
-    public static final String CONSONANT_LETTERS = "^[bcdfghjklmnpqrstvwxyz]";
-
-    public static final String DIVIDE_TEXT_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]*\\s?)";
-
     public static final char WRONG_LETTER = 'A';
 
     public static final char WRONG_LETTER_PREFIX = 'P';
@@ -22,6 +18,10 @@ public class RegularExpressionTextHandler {
 
     public static final String FIND_MISTAKE_REGULAR_EXPRESSION = "(" + WRONG_LETTER_PREFIX + ")(" + WRONG_LETTER + ")";
 
+    public static final String STARTS_WITH_CONSONANT_LETTER_REGULAR_EXPRESSION = "^[bcdfghjklmnpqrstvwxyz]";
+
+    public static final String DIVIDE_TEXT_ON_WORDS_REGULAR_EXPRESSION = "(\\w+)([.,:;!?-]*\\s?)";
+
     public static String replaceEachWordLetter(String text, char symbol, int letterNumber) throws NoSuchTextException, TextHandlerIndexOutOfBoundsException {
         if (text == null) {
             throw new NoSuchTextException("No text present");
@@ -29,15 +29,15 @@ public class RegularExpressionTextHandler {
         if (letterNumber < 0) {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + letterNumber);
         }
-        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
+        Matcher wordMatcher = createMatcher(text, DIVIDE_TEXT_ON_WORDS_REGULAR_EXPRESSION, false);
 
         StringBuilder result = new StringBuilder();
-        while (matcher.find()) {
-            StringBuilder currentWord = new StringBuilder(matcher.group(1));
+        while (wordMatcher.find()) {
+            StringBuilder currentWord = new StringBuilder(wordMatcher.group(1));
             if (letterNumber - 1 < currentWord.length()) {
                 currentWord.setCharAt(letterNumber - 1, symbol);
             }
-            currentWord.append(matcher.group(2));
+            currentWord.append(wordMatcher.group(2));
             result.append(currentWord);
         }
 
@@ -48,18 +48,18 @@ public class RegularExpressionTextHandler {
         if (text == null) {
             throw new NoSuchTextException("No text present");
         }
-        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
+        Matcher wordMatcher = createMatcher(text, DIVIDE_TEXT_ON_WORDS_REGULAR_EXPRESSION, false);
 
         StringBuilder resultText = new StringBuilder();
-        while (matcher.find()) {
-            StringBuilder currentWord = new StringBuilder(matcher.group(1));
+        while (wordMatcher.find()) {
+            StringBuilder currentWord = new StringBuilder(wordMatcher.group(1));
             Matcher mistakeMatcher = createMatcher(currentWord.toString(), FIND_MISTAKE_REGULAR_EXPRESSION, false);
 
             while (mistakeMatcher.find()) {
                 currentWord.setCharAt(mistakeMatcher.start(2), CORRECT_LETTER);
             }
 
-            currentWord.append(matcher.group(2));
+            currentWord.append(wordMatcher.group(2));
             resultText.append(currentWord);
         }
 
@@ -74,15 +74,15 @@ public class RegularExpressionTextHandler {
         if (wordLength < 0) {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
         }
-        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
+        Matcher wordMatcher = createMatcher(text, DIVIDE_TEXT_ON_WORDS_REGULAR_EXPRESSION, false);
 
         StringBuilder resultText = new StringBuilder();
-        while (matcher.find()) {
-            if (matcher.group(1).length() == wordLength) {
+        while (wordMatcher.find()) {
+            if (wordMatcher.group(1).length() == wordLength) {
                 resultText.append(substring);
-                resultText.append(matcher.group(2));
+                resultText.append(wordMatcher.group(2));
             } else {
-                resultText.append(matcher.group());
+                resultText.append(wordMatcher.group());
             }
         }
 
@@ -93,11 +93,11 @@ public class RegularExpressionTextHandler {
         if (text == null) {
             throw new NoSuchTextException("No text present");
         }
-        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
+        Matcher wordMatcher = createMatcher(text, DIVIDE_TEXT_ON_WORDS_REGULAR_EXPRESSION, false);
 
         StringBuilder resultText = new StringBuilder();
-        while (matcher.find()) {
-            resultText.append(matcher.group(1));
+        while (wordMatcher.find()) {
+            resultText.append(wordMatcher.group(1));
             resultText.append(WORDS_SEPARATOR);
         }
 
@@ -112,17 +112,17 @@ public class RegularExpressionTextHandler {
         if (wordLength < 0) {
             throw new TextHandlerIndexOutOfBoundsException("Index out of bounds " + wordLength);
         }
-        Matcher matcher = createMatcher(text, DIVIDE_TEXT_REGULAR_EXPRESSION, false);
+        Matcher wordMatcher = createMatcher(text, DIVIDE_TEXT_ON_WORDS_REGULAR_EXPRESSION, false);
 
         StringBuilder resultText = new StringBuilder();
-        while (matcher.find()) {
-            Matcher wordMatcher = createMatcher(matcher.group(1), CONSONANT_LETTERS, true);
+        while (wordMatcher.find()) {
+            Matcher currentWordMatcher = createMatcher(wordMatcher.group(1), STARTS_WITH_CONSONANT_LETTER_REGULAR_EXPRESSION, true);
 
-            if (matcher.group(1).length() != wordLength || !wordMatcher.find()) {
-                resultText.append(matcher.group(1));
+            if (wordMatcher.group(1).length() != wordLength || !currentWordMatcher.find()) {
+                resultText.append(wordMatcher.group(1));
             }
 
-            resultText.append(matcher.group(2));
+            resultText.append(wordMatcher.group(2));
         }
 
         return resultText.toString();
